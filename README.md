@@ -3,6 +3,10 @@
 - [Docker Hub repository](https://registry.hub.docker.com/u/kalaksi/tinyproxy/)
 - [GitHub repository](https://github.com/kalaksi/docker-tinyproxy)
 
+## DEPRECATION WARNING
+
+This container version is deprecated! Please use a newer version instead.
+
 ## Why use this container?
 **Simply put, this container has been written with simplicity and security in mind.**
 
