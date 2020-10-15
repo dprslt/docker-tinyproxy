@@ -30,12 +30,16 @@ RUN wget https://github.com/tinyproxy/tinyproxy/releases/download/1.11.0-rc1/tin
 RUN tar -xzvf tinyproxy-1.11.0-rc1.tar.gz
 RUN cd tinyproxy-1.11.0-rc1 ; ./autogen.sh && ./configure && make && make install
 
-WORKDIR /
-RUN rm -r /tmp/tinyproxy-1.11.0-rc1 tinyproxy-1.11.0-rc1.tar.gz
-
 RUN mkdir -p /etc/tinyproxy /var/run/tinyproxy /var/log/tinyproxy && chown -R ${TINYPROXY_UID}:${TINYPROXY_GID} /etc/tinyproxy /var/run/tinyproxy /var/log/tinyproxy
-RUN cp etc/tinyproxy.conf /etc/tinyproxy/tinyproxy.conf
+RUN cd tinyproxy-1.11.0-rc1 ; cp etc/tinyproxy.conf /etc/tinyproxy/tinyproxy.conf
+
+
+# Cleaning
+WORKDIR /
+RUN rm -r /tmp/tinyproxy-1.11.0-rc1 /tmp/tinyproxy-1.11.0-rc1.tar.gz
+
 EXPOSE 8888
+
 
 # Tinyproxy seems to be OK for getting privileges dropped beforehand
 USER ${TINYPROXY_UID}:${TINYPROXY_GID}
