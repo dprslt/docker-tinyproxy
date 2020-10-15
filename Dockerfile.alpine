@@ -21,11 +21,17 @@ ENV TINYPROXY_UID 57981
 ENV TINYPROXY_GID 57981
 
 RUN apk add --no-cache \
-      tinyproxy
+      wget \
+      alpine-sdk
 
-RUN mv /etc/tinyproxy/tinyproxy.conf /etc/tinyproxy/tinyproxy.default.conf && \
-    chown -R ${TINYPROXY_UID}:${TINYPROXY_GID} /etc/tinyproxy /var/run/tinyproxy /var/log/tinyproxy
+WORKDIR /tmp
 
+RUN wget https://github.com/tinyproxy/tinyproxy/releases/download/1.11.0-rc1/tinyproxy-1.11.0-rc1.tar.gz
+RUN tar -xzvf tinyproxy-1.11.0-rc1.tar.gz
+RUN cd tinyproxy-1.11.0-rc1 ; ./autogen.sh && ./configure && make && make install
+
+RUN mkdir -p /etc/tinyproxy /var/run/tinyproxy /var/log/tinyproxy && chown -R ${TINYPROXY_UID}:${TINYPROXY_GID} /etc/tinyproxy /var/run/tinyproxy /var/log/tinyproxy
+RUN touch /etc/tinyproxy/tinyproxy.conf
 EXPOSE 8888
 
 # Tinyproxy seems to be OK for getting privileges dropped beforehand
@@ -42,4 +48,4 @@ CMD set -eu; \
         ([ -z "$ALLOWED_NETWORKS" ]   || for network in $ALLOWED_NETWORKS; do echo "Allow $network" >> "$CONFIG"; done); \
         sed -i 's|^LogFile |# LogFile |' "$CONFIG"; \
     fi; \
-    exec /usr/bin/tinyproxy -d;
+    exec /usr/local/bin/tinyproxy -d;

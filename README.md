@@ -1,4 +1,10 @@
 
+## Forked
+
+
+Forked to support install from sources to get latest release.
+
+
 ## Repositories
 - [Docker Hub repository](https://hub.docker.com/r/kalaksi/tinyproxy/)
 - [GitHub repository](https://github.com/kalaksi/docker-tinyproxy)
